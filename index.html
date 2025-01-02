@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find Ratio from Your Standard Numbers</title>
+  <title>Number Ratio Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,8 +14,9 @@
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    h1, h2 {
+    h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
     label {
       display: block;
@@ -43,25 +44,47 @@
       font-weight: bold;
       margin-top: 20px;
     }
+    .section {
+      margin-bottom: 40px;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Find Ratio from Your Standard Numbers</h1>
-  <h2>Number Ratio Calculator</h2>
-  <form id="ratioForm">
-    <label for="input1">First Number:</label>
-    <input type="number" id="input1" placeholder="Enter first number" required>
+  <!-- Section 1: Standard Numbers -->
+  <div class="section">
+    <h2>Find Ratio from Your Standard Numbers</h2>
+    <form id="ratioForm">
+      <label for="input1">First Number:</label>
+      <input type="number" id="input1" placeholder="Enter first number" required>
 
-    <label for="input2">Second Number:</label>
-    <input type="number" id="input2" placeholder="Enter second number" required>
+      <label for="input2">Second Number:</label>
+      <input type="number" id="input2" placeholder="Enter second number" required>
 
-    <button type="button" onclick="calculateRatio()">Calculate Ratio</button>
-  </form>
+      <button type="button" onclick="calculateRatio()">Calculate Ratio</button>
+    </form>
 
-  <div class="result" id="result">Result: [ ]</div>
+    <div class="result" id="result">Result: [ ]</div>
+  </div>
+
+  <!-- Section 2: Numbers from Ratio -->
+  <div class="section">
+    <h2>Find Numbers from Your Ratio</h2>
+    <form id="numberForm">
+      <label for="ratio1">First Ratio:</label>
+      <input type="number" id="ratio1" placeholder="Enter first ratio" required>
+
+      <label for="ratio2">Second Ratio:</label>
+      <input type="number" id="ratio2" placeholder="Enter second ratio" required>
+
+      <button type="button" onclick="calculateNumbersFromRatio()">Calculate Numbers</button>
+    </form>
+
+    <div class="result" id="numberResult">Result: [ ]</div>
+  </div>
 
   <script>
+    // Function to calculate ratio from numbers
     function calculateRatio() {
       const input1 = parseFloat(document.getElementById('input1').value);
       const input2 = parseFloat(document.getElementById('input2').value);
@@ -74,6 +97,24 @@
 
       const ratio = (input2 / input1).toFixed(3); // Ratio with 3 decimal places
       result.textContent = `Result: [1:${ratio}]`;
+    }
+
+    // Function to calculate numbers from ratio
+    function calculateNumbersFromRatio() {
+      const ratio1 = parseFloat(document.getElementById('ratio1').value);
+      const ratio2 = parseFloat(document.getElementById('ratio2').value);
+      const numberResult = document.getElementById('numberResult');
+
+      if (isNaN(ratio1) || isNaN(ratio2) || ratio1 <= 0 || ratio2 <= 0) {
+        numberResult.textContent = "Error: Please enter valid positive ratios.";
+        return;
+      }
+
+      const scale = 100; // Scaling factor for standard numbers
+      const number1 = (ratio1 * scale).toFixed(0);
+      const number2 = (ratio2 * scale).toFixed(0);
+
+      numberResult.textContent = `Result: [${number1}:${number2}]`;
     }
   </script>
 
