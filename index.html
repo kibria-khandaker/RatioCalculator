@@ -4,56 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Number Ratio Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 20px;
-    }
-    .section {
-      margin-bottom: 40px;
-    }
-  </style>
+  <link rel="stylesheet" href="ratioStyle.css">
 </head>
 <body>
 
   <!-- Section 1: Standard Numbers -->
   <div class="section">
-    <h2>Find Ratio from Your Standard Numbers</h2>
+    <h2>(1) Find Ratio from Your Standard Numbers</h2>
     <form id="ratioForm">
       <label for="input1">First Number:</label>
       <input type="number" id="input1" placeholder="Enter first number" required>
@@ -69,7 +26,7 @@
 
   <!-- Section 2: Numbers from Ratio -->
   <div class="section">
-    <h2>Find Numbers from Your Ratio</h2>
+    <h2>(2) Find Numbers from Your Ratio</h2>
     <form id="numberForm">
       <label for="ratio1">First Ratio:</label>
       <input type="number" id="ratio1" placeholder="Enter first ratio" required>
@@ -77,8 +34,8 @@
       <label for="ratio2">Second Ratio:</label>
       <input type="number" id="ratio2" placeholder="Enter second ratio" required>
 
-      <label for="smallNumber">Input the smaller number from both your targeted numbers (Optional):</label>
-      <input type="number" id="smallNumber" placeholder="Enter the smaller number" onchange="updateScalingFactor()">
+      <label for="smallerTarget">Input the smaller number from both your targeted numbers (optional):</label>
+      <input type="number" id="smallerTarget" placeholder="Enter the smaller number">
 
       <label for="scalingFactor">Scaling Factor:</label>
       <input type="number" id="scalingFactor" value="100" required>
@@ -88,15 +45,16 @@
 
     <div class="result" id="numberResult">Result: [ ]</div>
   </div>
+
   <!-- Section 3: Find Expected Scaling Factor Value -->
   <div class="section">
-    <h2> Find Common Number From Two Ratios Value </h2>
+    <h2> (3) Find Common Number From Two Ratios Value </h2>
     <form id="scalingFactorForm">
       <label for="smallNumber">Input the smaller number from both your targeted numbers:</label>
       <input type="number" id="smallNumber" placeholder="Enter the smaller number" required>
 
-      <label for="targetedNumber">Input the larger targeted number:</label>
-      <input type="number" id="targetedNumber" placeholder="Enter the larger number" required>
+      <label for="largerNumber">Input the larger targeted number:</label>
+      <input type="number" id="largerNumber" placeholder="Enter the larger number" required>
 
       <button type="button" onclick="calculateScalingFactor()">Calculate Scaling Factor</button>
     </form>
@@ -104,76 +62,7 @@
     <div class="result" id="scalingFactorResult">Expected Scaling Factor: [ ]</div>
   </div>
 
-  <script>
-    // Function to calculate ratio from numbers
-    function calculateRatio() {
-      const input1 = parseFloat(document.getElementById('input1').value);
-      const input2 = parseFloat(document.getElementById('input2').value);
-      const result = document.getElementById('result');
 
-      if (isNaN(input1) || isNaN(input2) || input1 <= 0 || input2 <= 0) {
-        result.textContent = "Error: Please enter valid positive numbers.";
-        return;
-      }
-
-      const ratio = (input2 / input1).toFixed(3); // Ratio with 3 decimal places
-      result.textContent = `Result: [1:${ratio}]`;
-    }
-
-    // Function to update the scaling factor based on the smaller number
-    function updateScalingFactor() {
-      const ratio1 = parseFloat(document.getElementById('ratio1').value);
-      const smallNumber = parseFloat(document.getElementById('smallNumber').value);
-      const scalingFactorInput = document.getElementById('scalingFactor');
-
-      if (isNaN(ratio1) || isNaN(smallNumber) || ratio1 <= 0 || smallNumber <= 0) {
-        return;
-      }
-
-      const scalingFactor = (smallNumber / ratio1).toFixed(2);
-      scalingFactorInput.value = scalingFactor; // Automatically set the scaling factor
-    }
-
-    // Function to calculate numbers from ratio with the updated scaling factor
-    function calculateNumbersFromRatio() {
-      const ratio1 = parseFloat(document.getElementById('ratio1').value);
-      const ratio2 = parseFloat(document.getElementById('ratio2').value);
-      const scalingFactor = parseFloat(document.getElementById('scalingFactor').value);
-      const numberResult = document.getElementById('numberResult');
-
-      // Validation
-      if (isNaN(ratio1) || isNaN(ratio2) || ratio1 <= 0 || ratio2 <= 0) {
-        numberResult.textContent = "Error: Please enter valid positive numbers for ratios.";
-        return;
-      }
-
-      if (isNaN(scalingFactor) || scalingFactor <= 0) {
-        numberResult.textContent = "Error: Please enter a valid positive scaling factor.";
-        return;
-      }
-
-      const number1 = (ratio1 * scalingFactor).toFixed(0);
-      const number2 = (ratio2 * scalingFactor).toFixed(0);
-
-      numberResult.textContent = `Result: [${number1}:${number2}]`;
-    }
-
-
-    // Function to calculate expected scaling factor
-    function calculateScalingFactor() {
-      const smallNumber = parseFloat(document.getElementById('smallNumber').value);
-      const targetedNumber = parseFloat(document.getElementById('targetedNumber').value);
-      const scalingFactorResult = document.getElementById('scalingFactorResult');
-
-      if (isNaN(smallNumber) || isNaN(targetedNumber) || smallNumber <= 0 || targetedNumber <= 0) {
-        scalingFactorResult.textContent = "Error: Please enter valid positive numbers.";
-        return;
-      }
-
-      const scalingFactor = (targetedNumber / smallNumber).toFixed(3); // Scaling factor with 3 decimal places
-      scalingFactorResult.textContent = `Expected Scaling Factor: [${scalingFactor}]`;
-    }
-  </script>
-
+  <script src="ratioScript.js"></script>
 </body>
 </html>
