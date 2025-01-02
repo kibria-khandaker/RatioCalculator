@@ -3,29 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ratio Calculator</title>
+  <title>Number Ratio Calculator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
+      max-width: 400px;
       margin: 20px auto;
       padding: 20px;
       border: 1px solid #ddd;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-    label, input, button {
+    h2 {
+      text-align: center;
+    }
+    label {
       display: block;
-      width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
     input, button {
+      width: 100%;
       padding: 10px;
       font-size: 16px;
+      margin-bottom: 15px;
     }
     button {
       background-color: #007BFF;
-      color: #fff;
+      color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
@@ -34,11 +38,10 @@
       background-color: #0056b3;
     }
     .result {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
       margin-top: 20px;
-      padding: 10px;
-      background-color: #f8f9fa;
-      border: 1px solid #ddd;
-      border-radius: 4px;
     }
   </style>
 </head>
@@ -46,45 +49,30 @@
 
   <h2>Number Ratio Calculator</h2>
   <form id="ratioForm">
-    <label for="input1">First Number or Ratio (e.g., 300 or 1:1.7):</label>
-    <input type="text" id="input1" placeholder="Enter first number or ratio">
+    <label for="input1">First Number:</label>
+    <input type="number" id="input1" placeholder="Enter first number" required>
 
-    <label for="input2">Second Number (e.g., 400):</label>
-    <input type="text" id="input2" placeholder="Optional (leave blank for ratios)">
+    <label for="input2">Second Number:</label>
+    <input type="number" id="input2" placeholder="Enter second number" required>
 
     <button type="button" onclick="calculateRatio()">Calculate Ratio</button>
   </form>
 
-  <div class="result" id="result"></div>
+  <div class="result" id="result">Result: [ ]</div>
 
   <script>
     function calculateRatio() {
-      const input1 = document.getElementById('input1').value.trim();
-      const input2 = document.getElementById('input2').value.trim();
+      const input1 = parseFloat(document.getElementById('input1').value);
+      const input2 = parseFloat(document.getElementById('input2').value);
       const result = document.getElementById('result');
-      result.innerHTML = '';
 
-      try {
-        if (input1.includes(':')) {
-          // Input is a ratio like 1:1.7
-          const [a, b] = input1.split(':').map(parseFloat);
-          if (isNaN(a) || isNaN(b)) throw 'Invalid ratio format.';
-          const scaleFactor = 5; // Scale factor
-          result.innerHTML = `${a * scaleFactor} x ${b * scaleFactor} or ${a * 100} x ${b * 100}`;
-        } else if (input2) {
-          // Two numbers provided
-          const num1 = parseFloat(input1);
-          const num2 = parseFloat(input2);
-          if (isNaN(num1) || isNaN(num2)) throw 'Invalid numbers.';
-          const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
-          const divisor = gcd(num1, num2);
-          result.innerHTML = `${num1 / divisor}:${num2 / divisor} or 1:${(num2 / num1).toFixed(3)}`;
-        } else {
-          throw 'Provide a valid input format.';
-        }
-      } catch (error) {
-        result.innerHTML = `<span style="color: red;">Error: ${error}</span>`;
+      if (isNaN(input1) || isNaN(input2) || input1 <= 0 || input2 <= 0) {
+        result.textContent = "Error: Please enter valid positive numbers.";
+        return;
       }
+
+      const ratio = (input2 / input1).toFixed(3); // Ratio with 3 decimal places
+      result.textContent = `Result: [1:${ratio}]`;
     }
   </script>
 
