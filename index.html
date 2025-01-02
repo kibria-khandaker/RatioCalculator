@@ -77,6 +77,9 @@
       <label for="ratio2">Second Ratio:</label>
       <input type="number" id="ratio2" placeholder="Enter second ratio" required>
 
+      <label for="smallNumber">Input the smaller number from both your targeted numbers (Optional):</label>
+      <input type="number" id="smallNumber" placeholder="Enter the smaller number" onchange="updateScalingFactor()">
+
       <label for="scalingFactor">Scaling Factor:</label>
       <input type="number" id="scalingFactor" value="100" required>
 
@@ -85,7 +88,6 @@
 
     <div class="result" id="numberResult">Result: [ ]</div>
   </div>
-
   <!-- Section 3: Find Expected Scaling Factor Value -->
   <div class="section">
     <h2> Find Common Number From Two Ratios Value </h2>
@@ -118,18 +120,35 @@
       result.textContent = `Result: [1:${ratio}]`;
     }
 
-    // Function to calculate numbers from ratio
+    // Function to update the scaling factor based on the smaller number
+    function updateScalingFactor() {
+      const ratio1 = parseFloat(document.getElementById('ratio1').value);
+      const smallNumber = parseFloat(document.getElementById('smallNumber').value);
+      const scalingFactorInput = document.getElementById('scalingFactor');
+
+      if (isNaN(ratio1) || isNaN(smallNumber) || ratio1 <= 0 || smallNumber <= 0) {
+        return;
+      }
+
+      const scalingFactor = (smallNumber / ratio1).toFixed(2);
+      scalingFactorInput.value = scalingFactor; // Automatically set the scaling factor
+    }
+
+    // Function to calculate numbers from ratio with the updated scaling factor
     function calculateNumbersFromRatio() {
       const ratio1 = parseFloat(document.getElementById('ratio1').value);
       const ratio2 = parseFloat(document.getElementById('ratio2').value);
       const scalingFactor = parseFloat(document.getElementById('scalingFactor').value);
       const numberResult = document.getElementById('numberResult');
 
-      if (
-        isNaN(ratio1) || isNaN(ratio2) || ratio1 <= 0 || ratio2 <= 0 ||
-        isNaN(scalingFactor) || scalingFactor <= 0
-      ) {
-        numberResult.textContent = "Error: Please enter valid positive numbers and scaling factor.";
+      // Validation
+      if (isNaN(ratio1) || isNaN(ratio2) || ratio1 <= 0 || ratio2 <= 0) {
+        numberResult.textContent = "Error: Please enter valid positive numbers for ratios.";
+        return;
+      }
+
+      if (isNaN(scalingFactor) || scalingFactor <= 0) {
+        numberResult.textContent = "Error: Please enter a valid positive scaling factor.";
         return;
       }
 
@@ -138,6 +157,7 @@
 
       numberResult.textContent = `Result: [${number1}:${number2}]`;
     }
+
 
     // Function to calculate expected scaling factor
     function calculateScalingFactor() {
